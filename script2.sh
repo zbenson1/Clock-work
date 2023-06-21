@@ -1,6 +1,26 @@
 #!/bin/bash
 
 INDEX="/eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/www/DQMDC/RateMon/index.php"
+FIRST_RUN_FLAG=".first_run"
+
+# Checks if the code has been executed before
+
+if [ -f "$FIRST_RUN_FLAG" ]; then
+    echo "Welcome back!"
+else
+    echo "-Make sure you have your own CERN website in order to view plots!"
+    echo "-If you're unsure, check at the following website:"
+    echo "  https://webservices-portal.web.cern.ch/my-sites"
+    echo "-If you do not, create your WebEOS site here:"
+    echo "  https://webservices-portal.web.cern.ch/webeos"
+
+# Create the flag file to indicate that the code has been executed once
+
+    touch "$FIRST_RUN_FLAG"
+fi
+
+echo "Please enter your selected test runs (separated by spaces or commas): "
+read -r input_runs
 
 # Checks if all runs entered are six digits long. If a non-six digit run is detected, the script will stop running and exit.
 
@@ -21,16 +41,6 @@ remove_duplicates() {
     local unique_runs=($(echo "${input_runs}" | tr -s ' ' '\n' | sort -u | tr '\n' ' '))
     echo "${unique_runs[*]}"
 }
-
-echo "-Make sure you have your own CERN website in order to view plots!"
-echo "-If you're unsure, check at the following website:
-      https://webservices-portal.web.cern.ch/my-sites"
-
-echo "-If you do not, create your WebEOS site here:
-       https://webservices-portal.web.cern.ch/webeos"
-
-echo "Please enter your selected test runs (separated by spaces or commas): "
-read -r input_runs
 
 # Converts commas to spaces.
 
